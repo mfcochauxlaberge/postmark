@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"io/ioutil"
 	"net/http"
 	"time"
 )
@@ -42,7 +43,14 @@ func (s *Server) Send(ctx context.Context, email Email) (Response, error) {
 	}
 
 	// Send and get response
-	response, err := s.send(req)
+	resData, err := s.send(req)
+	if err != nil {
+		return Response{}, err
+	}
+
+	response := Response{}
+
+	err = json.Unmarshal(resData, &response)
 	if err != nil {
 		return Response{}, err
 	}
@@ -51,14 +59,14 @@ func (s *Server) Send(ctx context.Context, email Email) (Response, error) {
 }
 
 // SendBatch ...
-func (s *Server) SendBatch(ctx context.Context, emails ...Email) (Response, error) {
+func (s *Server) SendBatch(ctx context.Context, emails ...Email) ([]Response, error) {
 	if len(emails) == 0 {
-		return Response{}, nil
+		return nil, nil
 	}
 
 	data, err := json.Marshal(emails)
 	if err != nil {
-		return Response{}, err
+		return nil, err
 	}
 
 	endpoint := EndpointBatch
@@ -71,19 +79,26 @@ func (s *Server) SendBatch(ctx context.Context, emails ...Email) (Response, erro
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, endpoint, body)
 	if err != nil {
-		return Response{}, err
+		return nil, err
 	}
 
 	// Send and get response
-	response, err := s.send(req)
+	resData, err := s.send(req)
 	if err != nil {
-		return Response{}, err
+		return nil, err
 	}
 
-	return response, nil
+	responses := []Response{}
+
+	err = json.Unmarshal(resData, &responses)
+	if err != nil {
+		return nil, err
+	}
+
+	return responses, nil
 }
 
-func (s *Server) send(req *http.Request) (Response, error) {
+func (s *Server) send(req *http.Request) ([]byte, error) {
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Accept", "application/json")
 	req.Header.Add("X-Postmark-Server-Token", s.Token)
@@ -94,24 +109,19 @@ func (s *Server) send(req *http.Request) (Response, error) {
 
 	res, err := client.Do(req)
 	if err != nil {
-		return Response{}, err
+		return nil, err
 	}
 
-	// Decode response
-	dec := json.NewDecoder(res.Body)
-
-	var response Response
-
-	err = dec.Decode(&response)
+	resData, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return Response{}, err
+		return nil, err
 	}
 
 	// Close body
 	err = res.Body.Close()
 	if err != nil {
-		return Response{}, err
+		return nil, err
 	}
 
-	return response, nil
+	return resData, nil
 }
