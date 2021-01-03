@@ -8,6 +8,12 @@ import (
 	"time"
 )
 
+const (
+	PostmarkAPI   = "https://api.postmarkapp.com"
+	EndpointEmail = PostmarkAPI + "/email"
+	EndpointBatch = PostmarkAPI + "/email/batch"
+)
+
 // Client ...
 type Client struct {
 	APIToken string
@@ -15,8 +21,6 @@ type Client struct {
 
 // Send ...
 func (c *Client) Send(ctx context.Context, email Email) (Response, error) {
-	url := "https://api.postmarkapp.com/email"
-
 	data, err := json.Marshal(email)
 	if err != nil {
 		return Response{}, err
@@ -25,7 +29,7 @@ func (c *Client) Send(ctx context.Context, email Email) (Response, error) {
 	// Make Postmark request
 	body := bytes.NewReader(data)
 
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, body)
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, EndpointEmail, body)
 	if err != nil {
 		return Response{}, err
 	}
