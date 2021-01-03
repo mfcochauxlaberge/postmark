@@ -34,31 +34,8 @@ func (s *Server) Send(ctx context.Context, email Email) (Response, error) {
 		return Response{}, err
 	}
 
-	req.Header.Add("Content-Type", "application/json")
-	req.Header.Add("Accept", "application/json")
-	req.Header.Add("X-Postmark-Server-Token", s.APIToken)
-
-	client := &http.Client{
-		Timeout: 10 * time.Second,
-	}
-
-	res, err := client.Do(req)
-	if err != nil {
-		return Response{}, err
-	}
-
-	// Decode response
-	dec := json.NewDecoder(res.Body)
-
-	var response Response
-
-	err = dec.Decode(&response)
-	if err != nil {
-		return Response{}, err
-	}
-
-	// Close body
-	err = res.Body.Close()
+	// Send and get response
+	response, err := s.send(req)
 	if err != nil {
 		return Response{}, err
 	}
@@ -81,6 +58,16 @@ func (s *Server) SendBatch(ctx context.Context, emails []Email) (Response, error
 		return Response{}, err
 	}
 
+	// Send and get response
+	response, err := s.send(req)
+	if err != nil {
+		return Response{}, err
+	}
+
+	return response, nil
+}
+
+func (s *Server) send(req *http.Request) (Response, error) {
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Accept", "application/json")
 	req.Header.Add("X-Postmark-Server-Token", s.APIToken)
