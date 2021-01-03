@@ -65,3 +65,50 @@ func (c *Client) Send(ctx context.Context, email Email) (Response, error) {
 
 	return response, nil
 }
+
+// SendBatch ...
+func (c *Client) SendBatch(ctx context.Context, emails []Email) (Response, error) {
+	data, err := json.Marshal(emails)
+	if err != nil {
+		return Response{}, err
+	}
+
+	// Make Postmark request
+	body := bytes.NewReader(data)
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, EndpointBatch, body)
+	if err != nil {
+		return Response{}, err
+	}
+
+	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("Accept", "application/json")
+	req.Header.Add("X-Postmark-Server-Token", c.APIToken)
+
+	client := &http.Client{
+		Timeout: 10 * time.Second,
+	}
+
+	res, err := client.Do(req)
+	if err != nil {
+		return Response{}, err
+	}
+
+	// Decode response
+	dec := json.NewDecoder(res.Body)
+
+	var response Response
+
+	err = dec.Decode(&response)
+	if err != nil {
+		return Response{}, err
+	}
+
+	// Close body
+	err = res.Body.Close()
+	if err != nil {
+		return Response{}, err
+	}
+
+	return response, nil
+}
