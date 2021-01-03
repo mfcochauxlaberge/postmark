@@ -16,3 +16,7 @@ type NopSender struct{}
 func (NopSender) Send(_ context.Context, _ Email) (Response, error) {
 	return Response{}, nil
 }
+
+func (NopSender) SendBatch(_ context.Context, _ ...Email) ([]Response, error) {
+	return nil, nil
+}
