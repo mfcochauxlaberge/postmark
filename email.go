@@ -24,6 +24,11 @@ type Email struct {
 	InlineCSS     bool
 }
 
+// UsesTemplate ...
+func (e Email) UsesTemplate() bool {
+	return e.Subject != "" && (e.TemplateID != 0 || e.TemplateAlias != "")
+}
+
 // MarshalJSON ...
 func (e Email) MarshalJSON() ([]byte, error) {
 	email := map[string]interface{}{}
@@ -35,12 +40,12 @@ func (e Email) MarshalJSON() ([]byte, error) {
 	email["Tag"] = e.Tag
 	email["Headers"] = e.Headers
 
-	if e.Subject != "" {
+	if !e.UsesTemplate() {
 		// Email content
 		email["Subject"] = e.Subject
 		email["TextBody"] = e.TextBody
 		email["HtmlBody"] = e.HTMLBody
-	} else if e.TemplateID != 0 {
+	} else {
 		// Template
 		email["TemplateID"] = e.TemplateID
 		email["TemplateAlias"] = e.TemplateAlias
