@@ -47,7 +47,7 @@ func (e Email) MarshalJSON() ([]byte, error) {
 		email["HtmlBody"] = e.HTMLBody
 	} else {
 		// Template
-		email["TemplateID"] = e.TemplateID
+		email["TemplateId"] = e.TemplateID
 		email["TemplateAlias"] = e.TemplateAlias
 		email["TemplateModel"] = e.TemplateModel
 		email["InlineCss"] = e.InlineCSS
