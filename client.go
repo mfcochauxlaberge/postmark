@@ -14,13 +14,13 @@ const (
 	EndpointBatch = PostmarkAPI + "/email/batch"
 )
 
-// Client ...
-type Client struct {
+// Server ...
+type Server struct {
 	APIToken string
 }
 
 // Send ...
-func (c *Client) Send(ctx context.Context, email Email) (Response, error) {
+func (c *Server) Send(ctx context.Context, email Email) (Response, error) {
 	data, err := json.Marshal(email)
 	if err != nil {
 		return Response{}, err
@@ -67,7 +67,7 @@ func (c *Client) Send(ctx context.Context, email Email) (Response, error) {
 }
 
 // SendBatch ...
-func (c *Client) SendBatch(ctx context.Context, emails []Email) (Response, error) {
+func (c *Server) SendBatch(ctx context.Context, emails []Email) (Response, error) {
 	data, err := json.Marshal(emails)
 	if err != nil {
 		return Response{}, err
