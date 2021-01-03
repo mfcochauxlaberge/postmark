@@ -9,9 +9,11 @@ import (
 )
 
 const (
-	PostmarkAPI   = "https://api.postmarkapp.com"
-	EndpointEmail = PostmarkAPI + "/email"
-	EndpointBatch = PostmarkAPI + "/email/batch"
+	PostmarkAPI               = "https://api.postmarkapp.com"
+	EndpointEmail             = PostmarkAPI + "/email"
+	EndpointEmailWithTemplate = PostmarkAPI + "/email/withTemplate"
+	EndpointBatch             = PostmarkAPI + "/email/batch"
+	EndpointBatchWithTemplate = PostmarkAPI + "/email/batchWithTemplates"
 )
 
 // Server ...
@@ -26,10 +28,15 @@ func (s *Server) Send(ctx context.Context, email Email) (Response, error) {
 		return Response{}, err
 	}
 
+	endpoint := EndpointEmail
+	if email.UsesTemplate() {
+		endpoint = EndpointEmailWithTemplate
+	}
+
 	// Make Postmark request
 	body := bytes.NewReader(data)
 
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, EndpointEmail, body)
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, endpoint, body)
 	if err != nil {
 		return Response{}, err
 	}
@@ -45,15 +52,24 @@ func (s *Server) Send(ctx context.Context, email Email) (Response, error) {
 
 // SendBatch ...
 func (s *Server) SendBatch(ctx context.Context, emails ...Email) (Response, error) {
+	if len(emails) == 0 {
+		return Response{}, nil
+	}
+
 	data, err := json.Marshal(emails)
 	if err != nil {
 		return Response{}, err
 	}
 
+	endpoint := EndpointBatch
+	if emails[0].UsesTemplate() {
+		endpoint = EndpointBatchWithTemplate
+	}
+
 	// Make Postmark request
 	body := bytes.NewReader(data)
 
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, EndpointBatch, body)
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, endpoint, body)
 	if err != nil {
 		return Response{}, err
 	}
