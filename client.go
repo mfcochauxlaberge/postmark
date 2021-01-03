@@ -20,7 +20,7 @@ type Server struct {
 }
 
 // Send ...
-func (c *Server) Send(ctx context.Context, email Email) (Response, error) {
+func (s *Server) Send(ctx context.Context, email Email) (Response, error) {
 	data, err := json.Marshal(email)
 	if err != nil {
 		return Response{}, err
@@ -36,7 +36,7 @@ func (c *Server) Send(ctx context.Context, email Email) (Response, error) {
 
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Accept", "application/json")
-	req.Header.Add("X-Postmark-Server-Token", c.APIToken)
+	req.Header.Add("X-Postmark-Server-Token", s.APIToken)
 
 	client := &http.Client{
 		Timeout: 10 * time.Second,
@@ -67,7 +67,7 @@ func (c *Server) Send(ctx context.Context, email Email) (Response, error) {
 }
 
 // SendBatch ...
-func (c *Server) SendBatch(ctx context.Context, emails []Email) (Response, error) {
+func (s *Server) SendBatch(ctx context.Context, emails []Email) (Response, error) {
 	data, err := json.Marshal(emails)
 	if err != nil {
 		return Response{}, err
@@ -83,7 +83,7 @@ func (c *Server) SendBatch(ctx context.Context, emails []Email) (Response, error
 
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Accept", "application/json")
-	req.Header.Add("X-Postmark-Server-Token", c.APIToken)
+	req.Header.Add("X-Postmark-Server-Token", s.APIToken)
 
 	client := &http.Client{
 		Timeout: 10 * time.Second,
