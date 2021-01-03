@@ -2,7 +2,6 @@ package postmark
 
 import (
 	"encoding/json"
-	"time"
 )
 
 // Email ...
@@ -56,13 +55,4 @@ func (e Email) MarshalJSON() ([]byte, error) {
 	}
 
 	return data, nil
-}
-
-// Response ...
-type Response struct {
-	To          string
-	SubmittedAt time.Time
-	MessageID   string
-	ErrorCode   int
-	Message     string
 }
