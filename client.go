@@ -16,7 +16,7 @@ const (
 
 // Server ...
 type Server struct {
-	APIToken string
+	Token string
 }
 
 // Send ...
@@ -70,7 +70,7 @@ func (s *Server) SendBatch(ctx context.Context, emails []Email) (Response, error
 func (s *Server) send(req *http.Request) (Response, error) {
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Accept", "application/json")
-	req.Header.Add("X-Postmark-Server-Token", s.APIToken)
+	req.Header.Add("X-Postmark-Server-Token", s.Token)
 
 	client := &http.Client{
 		Timeout: 10 * time.Second,
