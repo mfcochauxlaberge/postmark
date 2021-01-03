@@ -14,13 +14,13 @@ type Email struct {
 
 	// Content
 	Subject  string `json:",omitempty"`
-	TextBody string
+	TextBody string `json:",omitempty"`
 	HTMLBody string `json:"HtmlBody"`
 
 	// Template
-	TemplateID    uint
-	TemplateAlias string
-	TemplateModel map[string]interface{}
+	TemplateID    uint                   `json:",omitempty"`
+	TemplateAlias string                 `json:",omitempty"`
+	TemplateModel map[string]interface{} `json:",omitempty"`
 	InlineCSS     bool
 }
 
