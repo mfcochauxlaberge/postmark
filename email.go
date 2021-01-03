@@ -26,7 +26,7 @@ type Email struct {
 
 // UsesTemplate ...
 func (e Email) UsesTemplate() bool {
-	return e.Subject != "" && (e.TemplateID != 0 || e.TemplateAlias != "")
+	return e.Subject == "" && (e.TemplateID != 0 || e.TemplateAlias != "")
 }
 
 // MarshalJSON ...
