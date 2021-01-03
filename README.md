@@ -1,12 +1,12 @@
 <div align="center" style="text-align: center;">
   <img src="https://raw.githubusercontent.com/mfcochauxlaberge/postmark/master/assets/logo.png" height="120">
   <br>
-  <!-- <a href="https://github.com/mfcochauxlaberge/postmark/actions?query=workflow%3ATest+branch%3Amaster">
+  <a href="https://github.com/mfcochauxlaberge/postmark/actions?query=workflow%3ATest+branch%3Amaster">
     <img src="https://github.com/mfcochauxlaberge/postmark/workflows/Test/badge.svg?branch=master">
   </a>
   <a href="https://github.com/mfcochauxlaberge/postmark/actions?query=workflow%3ALint+branch%3Amaster">
     <img src="https://github.com/mfcochauxlaberge/postmark/workflows/Lint/badge.svg?branch=master">
-  </a> -->
+  </a>
   <a href="https://goreportcard.com/report/github.com/mfcochauxlaberge/postmark">
     <img src="https://goreportcard.com/badge/github.com/mfcochauxlaberge/postmark">
   </a>
