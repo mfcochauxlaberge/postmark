@@ -44,7 +44,7 @@ func (s *Server) Send(ctx context.Context, email Email) (Response, error) {
 }
 
 // SendBatch ...
-func (s *Server) SendBatch(ctx context.Context, emails []Email) (Response, error) {
+func (s *Server) SendBatch(ctx context.Context, emails ...Email) (Response, error) {
 	data, err := json.Marshal(emails)
 	if err != nil {
 		return Response{}, err
