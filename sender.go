@@ -7,6 +7,7 @@ import (
 // Sender ...
 type Sender interface {
 	Send(context.Context, Email) (Response, error)
+	SendBatch(context.Context, ...Email) ([]Response, error)
 }
 
 // NopSender ...
