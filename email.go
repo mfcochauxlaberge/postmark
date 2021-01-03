@@ -38,7 +38,10 @@ func (e Email) MarshalJSON() ([]byte, error) {
 	email["To"] = e.To
 	email["MessageStream"] = e.MessageStream
 	email["Tag"] = e.Tag
-	email["Headers"] = e.Headers
+
+	if len(e.Headers) > 0 {
+		email["Headers"] = e.Headers
+	}
 
 	if !e.UsesTemplate() {
 		// Email content
@@ -47,9 +50,16 @@ func (e Email) MarshalJSON() ([]byte, error) {
 		email["HtmlBody"] = e.HTMLBody
 	} else {
 		// Template
-		email["TemplateId"] = e.TemplateID
-		email["TemplateAlias"] = e.TemplateAlias
-		email["TemplateModel"] = e.TemplateModel
+		if e.TemplateID != 0 {
+			email["TemplateId"] = e.TemplateID
+		} else if e.TemplateAlias != "" {
+			email["TemplateAlias"] = e.TemplateAlias
+		}
+
+		if len(e.TemplateModel) > 0 {
+			email["TemplateModel"] = e.TemplateModel
+		}
+
 		email["InlineCss"] = e.InlineCSS
 	}
 
