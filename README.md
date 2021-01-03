@@ -1,4 +1,6 @@
 <div align="center" style="text-align: center;">
+  <img src="https://raw.githubusercontent.com/mfcochauxlaberge/postmark/master/assets/logo.png" height="120">
+  <br>
   <!-- <a href="https://github.com/mfcochauxlaberge/postmark/actions?query=workflow%3ATest+branch%3Amaster">
     <img src="https://github.com/mfcochauxlaberge/postmark/workflows/Test/badge.svg?branch=master">
   </a>
