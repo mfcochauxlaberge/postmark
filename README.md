@@ -14,9 +14,9 @@
     <img src="https://img.shields.io/codecov/c/github/mfcochauxlaberge/postmark">
   </a>
   <br>
-  <!-- <a href="https://github.com/mfcochauxlaberge/postmark/blob/master/go.mod">
-    <img src="https://img.shields.io/badge/go%20version-1.12%2B-%2300acd7">
-  </a> -->
+  <a href="https://github.com/mfcochauxlaberge/postmark/blob/master/go.mod">
+    <img src="https://img.shields.io/badge/go%20version-1.13%2B-%2300acd7">
+  </a>
   <!-- <a href="https://github.com/mfcochauxlaberge/postmark/blob/master/go.mod">
     <img src="https://img.shields.io/github/v/release/mfcochauxlaberge/postmark?include_prereleases&sort=semver">
   </a> -->
