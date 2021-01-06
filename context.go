@@ -19,4 +19,14 @@ func GetSender(ctx context.Context) Sender {
 	return NopSender{}
 }
 
+// Send ...
+func Send(ctx context.Context, email Email) (Response, error) {
+	return GetSender(ctx).Send(ctx, email)
+}
+
+// SendBatch ...
+func SendBatch(ctx context.Context, emails ...Email) ([]Response, error) {
+	return GetSender(ctx).SendBatch(ctx, emails...)
+}
+
 type postmarkKey struct{}
