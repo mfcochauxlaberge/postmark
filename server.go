@@ -64,7 +64,11 @@ func (s *Server) SendBatch(ctx context.Context, emails ...Email) ([]Response, er
 		return nil, nil
 	}
 
-	data, err := json.Marshal(emails)
+	messages := map[string][]Email{
+		"Messages": emails,
+	}
+
+	data, err := json.Marshal(messages)
 	if err != nil {
 		return nil, err
 	}
