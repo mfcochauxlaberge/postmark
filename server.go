@@ -64,6 +64,16 @@ func (s *Server) SendBatch(ctx context.Context, emails ...Email) ([]Response, er
 		return nil, nil
 	}
 
+	batches := [][]Email{}
+
+	if len(emails) <= 500 {
+		batches = [][]Email{emails}
+	} else {
+		n := (len(emails) / 500) + 1
+
+		batches = make([][]Email, 0, n)
+	}
+
 	messages := map[string][]Email{
 		"Messages": emails,
 	}
